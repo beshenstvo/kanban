@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CompletedStoreRequest;
 use App\Http\Resources\CompletedResource;
 use App\Models\Completed;
 use Illuminate\Http\Request;
@@ -25,9 +26,11 @@ class CompletedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompletedStoreRequest $request)
     {
-        //
+        $createdCompleted = Completed::create($request->validated());
+
+        return new CompletedResource($createdCompleted);
     }
 
     /**

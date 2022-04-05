@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InProcessStoreRequest;
 use App\Http\Resources\InProcessResource;
 use App\Models\InProcess;
 use Illuminate\Http\Request;
@@ -25,9 +26,11 @@ class InProcessController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InProcessStoreRequest $request)
     {
+        $createdInProcces = InProcess::create($request->validated());
 
+        return new InProcessResource($createdInProcces);
     }
 
     /**

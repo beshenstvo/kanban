@@ -8,6 +8,8 @@ use App\Http\Resources\TaskResource;
 use App\Models\Tasks;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Exception;
+use Throwable;
 
 class TaskController extends Controller
 {
@@ -27,18 +29,10 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskStoreRequest $request)
     {
-        //dd($request->all());
-        $validatedData = $request->validate([
-            'taskName' => 'required|string|min:2|max:255',
-            'description' => 'required',
-            'deadline' => 'required|date',
-            'user_id' => 'required'
-        ]);
-        $createdTask = Tasks::create($validatedData);
-   
-        
+        $createdTask = Tasks::create($request->validated());
+
         return new TaskResource($createdTask);
     }
 
