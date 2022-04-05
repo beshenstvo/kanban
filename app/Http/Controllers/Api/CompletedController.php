@@ -7,6 +7,7 @@ use App\Http\Requests\CompletedStoreRequest;
 use App\Http\Resources\CompletedResource;
 use App\Models\Completed;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CompletedController extends Controller
 {
@@ -51,9 +52,11 @@ class CompletedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompletedStoreRequest $request, Completed $completed)
     {
-        //
+        $completed->update($request->validated());
+
+        return new CompletedResource($completed);
     }
 
     /**
@@ -62,8 +65,10 @@ class CompletedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Completed $completed)
     {
-        //
+        $completed->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

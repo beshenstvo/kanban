@@ -9,6 +9,7 @@ use App\Models\Tasks;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\Response;
 use Throwable;
 
 class TaskController extends Controller
@@ -54,9 +55,11 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TaskStoreRequest $request, Tasks $task)
     {
-        //
+        $task->update($request->validated());
+
+        return new TaskResource($task);
     }
 
     /**
@@ -65,8 +68,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tasks $task)
     {
-        //
+        $task->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

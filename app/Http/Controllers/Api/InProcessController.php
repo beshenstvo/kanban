@@ -7,6 +7,7 @@ use App\Http\Requests\InProcessStoreRequest;
 use App\Http\Resources\InProcessResource;
 use App\Models\InProcess;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class InProcessController extends Controller
 {
@@ -51,9 +52,11 @@ class InProcessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(InProcessStoreRequest $request, InProcess $inProcess)
     {
-        //
+        $inProcess->update($request->validated());
+
+        return new InProcessResource($inProcess);
     }
 
     /**
@@ -62,8 +65,10 @@ class InProcessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(InProcess $inProcess)
     {
-        //
+        $inProcess->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
