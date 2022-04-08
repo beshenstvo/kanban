@@ -29,9 +29,11 @@ class InProcessController extends Controller
      */
     public function store(InProcessStoreRequest $request)
     {
+        dd($request);
+
         $createdInProcces = InProcess::create($request->validated());
 
-        return new InProcessResource($createdInProcces);
+        return $createdInProcces;
     }
 
     /**
@@ -52,11 +54,11 @@ class InProcessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(InProcessStoreRequest $request, InProcess $inProcess)
+    public function update(InProcessStoreRequest $request, InProcess $inprocess)
     {
-        $inProcess->update($request->validated());
+        $inprocess->update($request->validated());
 
-        return new InProcessResource($inProcess);
+        return new InProcessResource($inprocess);
     }
 
     /**
@@ -65,9 +67,9 @@ class InProcessController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(InProcess $inProcess)
+    public function destroy(InProcess $inprocess)
     {
-        $inProcess->delete();
+        $inprocess->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

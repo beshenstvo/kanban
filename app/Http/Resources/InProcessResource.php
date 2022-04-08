@@ -17,7 +17,7 @@ class InProcessResource extends JsonResource
         return [
             'id' => $this->id,
             'responsible' => $this->responsible,
-            'task_id' => $this->task_id
+            'tasks_id' => $this->tasks_id
         ];
     }
 }
