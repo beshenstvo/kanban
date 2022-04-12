@@ -45,7 +45,7 @@ class TaskController extends Controller
      */
     public function show($id)
     {
-        return new TaskResource(Tasks::findOrFail($id));
+        return new TaskResource(Tasks::with('inprocess')->findOrFail($id));
     }
 
     /**

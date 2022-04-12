@@ -20,7 +20,8 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'deadline' => $this->deadline,
             'user_id' => $this->user_id,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'inprocess' => InProcessResource::collection($this->inprocess),
         ];
     }
 }

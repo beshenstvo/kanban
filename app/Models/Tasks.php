@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tasks extends Model
 {
+    public function inprocess() {
+        return $this->hasMany(InProcess::class);
+    }
+
     use HasFactory;
     protected $fillable = [
         'taskName',

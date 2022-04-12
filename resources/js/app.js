@@ -1,24 +1,22 @@
 require('./bootstrap');
 
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from '../../node_modules/vue';
+import VueRouter from '../../node_modules/vue-router';
 import App from './components/App';
 import Tasks from './components/Tasks';
 import Inprocess from './components/Inprocess';
 import Completed from './components/Completed';
+import Profile from './components/Profile';
 
-
-// window.Vue = require('vue').default;
-// window.Vue = require('vue').use;
-
-// Vue.component('app', require('./components/App'))
 
 Vue.use(VueRouter);
 const router = new VueRouter({
     mode: 'history',
+    linkActiveClass: "active-link", 
+    linkExactActiveClass: "active-link",
     routes: [
         {
-            path: '/',
+            path: '/tasks',
             name: 'tasks',
             component: Tasks
         },
@@ -31,14 +29,17 @@ const router = new VueRouter({
             path: '/completed',
             name: 'completed',
             component: Completed
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: Profile
         }
     ]
 });
 
 const app = new Vue({
     el: '#app',
-    component: { App },
+    render: h => h(App),
     router
 });
-
-export default app;

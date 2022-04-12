@@ -26,20 +26,20 @@
 
 <div class="navbar navbar-expand-lg" style="background-color: rgba(78, 153, 148, 1); width: 15%; min-height: 100%;
 position: fixed;">
-<div class="d-flex row ">
-    <div style="text-align: center;" >
-        <a class="nav-link" aria-current="page" href="#" style="color: white">Задачи</a>
+    <div class="d-flex row ">
+        <div style="text-align: center;" >
+            <a class="nav-link" aria-current="page" href="#" style="color: white">Задачи</a>
+        </div>
+        <div style="text-align: center;">
+            <a class="nav-link" aria-current="page" href="#" style="color: white">В процессе</a>
+        </div>
+        <div style="text-align: center;">
+            <a class="nav-link" aria-current="page" href="#" style="color: white">Завершенные</a>
+        </div>
+        <div style="text-align: center;" class="mt-auto">
+            <a class="nav-link" aria-current="page" href="#" style="color: white">Профиль</a>
+        </div>
     </div>
-    <div style="text-align: center;">
-        <a class="nav-link" aria-current="page" href="#" style="color: white">В процессе</a>
-    </div>
-    <div style="text-align: center;">
-        <a class="nav-link" aria-current="page" href="#" style="color: white">Завершенные</a>
-    </div>
-    <div style="text-align: center;" class="mt-auto">
-        <a class="nav-link" aria-current="page" href="#" style="color: white">Профиль</a>
-    </div>
-</div>
 </div>
 
 </body>

@@ -29,8 +29,6 @@ class InProcessController extends Controller
      */
     public function store(InProcessStoreRequest $request)
     {
-        dd($request);
-
         $createdInProcces = InProcess::create($request->validated());
 
         return $createdInProcces;
@@ -44,7 +42,7 @@ class InProcessController extends Controller
      */
     public function show($id)
     {
-        return  new InProcessResource(InProcess::findOrFail($id));
+        return  new InProcessResource(InProcess::with('completed')->findOrFail($id));
     }
 
     /**
