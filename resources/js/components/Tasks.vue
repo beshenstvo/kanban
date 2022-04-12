@@ -4,7 +4,7 @@
             <div><a href="#"  v-on:click="addTask()"><i class="fa-solid fa-plus add-button"></i></a></div>
         </div>
         <div class='container d-flex flex-wrap'>
-            <div class="card text-center m-4" v-for="task in tasks" style='width: 45%'>
+            <div class="card text-center m-4" v-for="task in tasks" style='width: 46%'>
                 <div class="card-header">
                     Задача: {{ task.id }}
                 </div>
@@ -54,7 +54,7 @@
                                 <select class="form-select" v-model="statusAdd" @change="onChange()" id="inputGroupSelect02">
                                     <option value="1" selected>Задачи</option>
                                     <option value="2">В процессе</option>
-                                    <option value="3">Завершенный</option>
+                                   <!-- <option value="3">Завершенный</option> -->
                                 </select>
                                 <label class="input-group-text" for="inputGroupSelect02">Статус</label>
                             </div>
@@ -62,10 +62,10 @@
                             <div class="input-group mb-3" v-if="responsibleBool">
                                 <input id="responsible" v-model="responsible" type="text" class="form-control" aria-describedby="basic-addon1">
                             </div>
-                            <label for="dateCompletion" class="form-label" v-if="dateCompletionBool">Дата завершения:</label>
+                           <!-- <label for="dateCompletion" class="form-label" v-if="dateCompletionBool">Дата завершения:</label>
                             <div class="input-group mb-3" v-if="dateCompletionBool">
                                 <input id="dateCompletion" v-model="dateCompletion" type="date" class="form-control" aria-describedby="basic-addon1">
-                            </div>
+                            </div> -->
                             <div class="modal-footer">
                                 <button type="button" class="btn button-purple" v-on:click="closeEditModal()">Закрыть</button>
                                 <button type="button" class="btn button-green" v-on:click="saveTasks(id)">Сохранить</button>

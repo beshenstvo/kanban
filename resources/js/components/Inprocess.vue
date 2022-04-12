@@ -4,7 +4,7 @@
             <h1>В процессе</h1>
         </div>
         <div class='container d-flex flex-wrap'>
-            <div class="card text-center m-4" v-for="task in inprocess" style='width: 45%'>
+            <div class="card text-center m-4" v-for="task in inprocess" style='width: 46%'>
                 <div class="card-header">
                     Задача: {{ task.id }}
                 </div>

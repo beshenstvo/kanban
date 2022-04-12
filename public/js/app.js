@@ -5325,7 +5325,202 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      inprocess: [],
+      errored: false,
+      loading: true,
+      modal: false,
+      id: '',
+      task: '',
+      description: '',
+      deadline: '',
+      user_id: '',
+      taskAdd: '',
+      descriptionAdd: '',
+      deadlineAdd: '',
+      statusAdd: 3,
+      dateCompletionBool: false,
+      responsibleBool: false,
+      responsible: '',
+      dateCompletion: ''
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/tasks').then(function (response) {
+      response.data.data.forEach(function (element) {
+        if (element.inprocess.length != 0) {
+          if (element.inprocess[0].completed.length != 0) {
+            _this.inprocess.push(element);
+          }
+        }
+      });
+    })["catch"](function (error) {
+      console.log(error);
+      _this.errored = true;
+    })["finally"](function () {
+      _this.loading = false;
+    });
+  },
+  methods: {
+    onChange: function onChange() {
+      console.log('select check ' + this.statusAdd);
+
+      if (this.statusAdd == 2) {
+        this.responsibleBool = true;
+        this.dateCompletionBool = false;
+      } else if (this.statusAdd == 3) {
+        this.responsibleBool = true;
+        this.dateCompletionBool = true;
+      } else {
+        this.responsibleBool = false;
+        this.dateCompletionBool = false;
+      }
+    },
+    deleteTask: function deleteTask(id) {
+      var _this2 = this;
+
+      console.log(id);
+      axios.post('/api/tasks/' + id, {
+        _method: 'DELETE'
+      })["catch"](function (error) {
+        console.log(error);
+        _this2.errored = true;
+      });
+      document.location.reload();
+    },
+    showModalAndGetTask: function showModalAndGetTask(id) {
+      var _this3 = this;
+
+      this.modal = true;
+      this.id = id;
+      axios.get('/api/tasks/' + id).then(function (response) {
+        console.log(response.data.data);
+        _this3.task = response.data.data.taskName;
+        _this3.description = response.data.data.description;
+        _this3.deadline = response.data.data.deadline;
+        _this3.user_id = response.data.data.user_id;
+        _this3.responsible = response.data.data.inprocess[0].responsible;
+        _this3.dateCompletion = response.data.data.inprocess[0].completed[0].dateCompletion;
+      })["catch"](function (error) {
+        console.log(error);
+        _this3.errored = true;
+      });
+      console.log('show ' + id);
+    },
+    saveTasks: function saveTasks(id) {
+      var _this4 = this;
+
+      axios.post('/api/tasks/' + id, {
+        _method: 'PUT',
+        taskName: this.task,
+        description: this.description,
+        deadline: this.deadline,
+        user_id: this.user_id
+      })["catch"](function (error) {
+        console.log(error);
+        _this4.errored = true;
+      });
+      axios.get('/api/tasks/' + id).then(function (response) {
+        axios.post('/api/inprocess/' + response.data.data.inprocess[0].id, {
+          _method: 'PUT',
+          responsible: _this4.responsible,
+          tasks_id: id
+        })["catch"](function (error) {
+          console.log(error);
+          _this4.errored = true;
+        });
+        axios.post('/api/completed/' + response.data.data.inprocess[0].completed[0].id, {
+          _method: 'PUT',
+          dateCompletion: _this4.dateCompletion,
+          in_process_id: response.data.data.inprocess[0].id
+        })["catch"](function (error) {
+          console.log(error);
+          _this4.errored = true;
+        });
+        document.location.reload();
+      });
+      this.modal = false;
+    },
+    closeEditModal: function closeEditModal() {
+      this.modal = false;
+    }
+  }
+});
 
 /***/ }),
 
@@ -28943,9 +29138,390 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Завершенные")])
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "container d-flex flex-wrap" },
+      _vm._l(_vm.inprocess, function (task) {
+        return _c(
+          "div",
+          {
+            staticClass: "card text-center m-4",
+            staticStyle: { width: "46%" },
+          },
+          [
+            _c("div", { staticClass: "card-header" }, [
+              _vm._v(
+                "\n                Задача: " +
+                  _vm._s(task.id) +
+                  "\n            "
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body " }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "card-title",
+                  staticStyle: { "text-align": "left !important" },
+                },
+                [_vm._v(_vm._s(task.taskName))]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass: "card-text",
+                  staticStyle: { "text-align": "left !important" },
+                },
+                [
+                  _c("strong", [_vm._v("Описание: ")]),
+                  _vm._v(_vm._s(task.description)),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass: "card-text",
+                  staticStyle: { "text-align": "left !important" },
+                },
+                [
+                  _c("strong", [_vm._v("Дедлайн: ")]),
+                  _vm._v(_vm._s(task.deadline)),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass: "card-text",
+                  staticStyle: { "text-align": "left !important" },
+                },
+                [
+                  _c("strong", [_vm._v("Ответственный: ")]),
+                  _vm._v(_vm._s(task.inprocess[0].responsible)),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "p",
+                {
+                  staticClass: "card-text",
+                  staticStyle: { "text-align": "left !important" },
+                },
+                [
+                  _c("strong", [_vm._v("Завершенный: ")]),
+                  _vm._v(_vm._s(task.inprocess[0].completed[0].dateCompletion)),
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-warning",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.showModalAndGetTask(task.id)
+                    },
+                  },
+                },
+                [_vm._v("Изменить")]
+              ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.deleteTask(task.id)
+                    },
+                  },
+                },
+                [_vm._v("Удалить")]
+              ),
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer text-muted" }, [
+              _vm._v(
+                "\n               Создано: " +
+                  _vm._s(task.created_at) +
+                  "\n            "
+              ),
+            ]),
+          ]
+        )
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _vm.errored
+      ? _c(
+          "div",
+          { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+          [_vm._v("\n        Ошибка загрузки данных!\n    ")]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.loading
+      ? _c("div", { staticClass: "d-flex align-items-center" }, [
+          _c("strong", [_vm._v("Loading...")]),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "spinner-border ms-auto",
+            attrs: { role: "status", "aria-hidden": "true" },
+          }),
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.modal
+      ? _c("div", { staticClass: "my-modal", attrs: { id: _vm.id } }, [
+          _c("div", [
+            _c("div", { staticClass: "modal-dialog" }, [
+              _c("div", { staticClass: "modal-content" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("div", { staticClass: "p-3" }, [
+                  _c(
+                    "label",
+                    { staticClass: "form-label mt-3", attrs: { for: "task" } },
+                    [_vm._v("Задача:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.task,
+                          expression: "task",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "task",
+                        type: "text",
+                        "aria-label": "Задача",
+                        "aria-describedby": "basic-addon1",
+                      },
+                      domProps: { value: _vm.task },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.task = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "form-label",
+                      attrs: { for: "description" },
+                    },
+                    [_vm._v("Описание:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.description,
+                          expression: "description",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "description",
+                        "aria-label": "With textarea",
+                      },
+                      domProps: { value: _vm.description },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.description = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    { staticClass: "form-label", attrs: { for: "deadline" } },
+                    [_vm._v("Дедлайн:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.deadline,
+                          expression: "deadline",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "deadline",
+                        type: "date",
+                        "aria-label": "Дедлайн",
+                        "aria-describedby": "basic-addon1",
+                      },
+                      domProps: { value: _vm.deadline },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.deadline = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "form-label",
+                      attrs: { for: "responsible" },
+                    },
+                    [_vm._v("Ответственный:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.responsible,
+                          expression: "responsible",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "responsible",
+                        type: "text",
+                        "aria-describedby": "basic-addon1",
+                      },
+                      domProps: { value: _vm.responsible },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.responsible = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "form-label",
+                      attrs: { for: "dateCompletion" },
+                    },
+                    [_vm._v("Дата завершения:")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group mb-3" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.dateCompletion,
+                          expression: "dateCompletion",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        id: "dateCompletion",
+                        type: "date",
+                        "aria-describedby": "basic-addon1",
+                      },
+                      domProps: { value: _vm.dateCompletion },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.dateCompletion = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn button-purple",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.closeEditModal()
+                          },
+                        },
+                      },
+                      [_vm._v("Закрыть")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn button-green",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            return _vm.saveTasks(_vm.id)
+                          },
+                        },
+                      },
+                      [_vm._v("Сохранить")]
+                    ),
+                  ]),
+                ]),
+              ]),
+            ]),
+          ]),
+        ])
+      : _vm._e(),
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "d-flex justify-content-evenly" }, [
+      _c("h1", [_vm._v("Завершенные")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header edit-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Редактирование")]),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -28979,7 +29555,7 @@ var render = function () {
           "div",
           {
             staticClass: "card text-center m-4",
-            staticStyle: { width: "45%" },
+            staticStyle: { width: "46%" },
           },
           [
             _c("div", { staticClass: "card-header" }, [
@@ -29473,7 +30049,7 @@ var render = function () {
           "div",
           {
             staticClass: "card text-center m-4",
-            staticStyle: { width: "45%" },
+            staticStyle: { width: "46%" },
           },
           [
             _c("div", { staticClass: "card-header" }, [
@@ -29736,10 +30312,6 @@ var render = function () {
                         _c("option", { attrs: { value: "2" } }, [
                           _vm._v("В процессе"),
                         ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "3" } }, [
-                          _vm._v("Завершенный"),
-                        ]),
                       ]
                     ),
                     _vm._v(" "),
@@ -29788,47 +30360,6 @@ var render = function () {
                                 return
                               }
                               _vm.responsible = $event.target.value
-                            },
-                          },
-                        }),
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.dateCompletionBool
-                    ? _c(
-                        "label",
-                        {
-                          staticClass: "form-label",
-                          attrs: { for: "dateCompletion" },
-                        },
-                        [_vm._v("Дата завершения:")]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.dateCompletionBool
-                    ? _c("div", { staticClass: "input-group mb-3" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.dateCompletion,
-                              expression: "dateCompletion",
-                            },
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            id: "dateCompletion",
-                            type: "date",
-                            "aria-describedby": "basic-addon1",
-                          },
-                          domProps: { value: _vm.dateCompletion },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.dateCompletion = $event.target.value
                             },
                           },
                         }),
