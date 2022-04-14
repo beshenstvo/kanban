@@ -40,32 +40,39 @@
                         <div class="p-3">
                             <label for="task" class="form-label mt-3">Задача:</label>
                             <div class="input-group mb-3">
-                                <input id="task" v-model="task" type="text" class="form-control" aria-label="Задача" aria-describedby="basic-addon1">
+                                <input id="task" v-model="task" type="text" class="form-control" :class="{'is-invalid': $v.task.$error}" aria-label="Задача" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.task.required">
+                                    Поле обязательное.
+                                </div>
                             </div>
                             <label for="description" class="form-label">Описание:</label>
                             <div class="input-group mb-3">
-                                <textarea id="description" v-model="description" class="form-control" aria-label="With textarea"></textarea>
+                                <textarea id="description" v-model="description" class="form-control" :class="{'is-invalid': $v.description.$error}" aria-label="With textarea"></textarea>
+                                <div class="invalid-feedback" v-if="!$v.description.required">
+                                    Поле обязательное.
+                                </div>
                             </div>
                             <label for="deadline" class="form-label">Дедлайн:</label>
                             <div class="input-group mb-3">
-                                <input id="deadline" v-model="deadline" type="date" class="form-control" aria-label="Дедлайн" aria-describedby="basic-addon1">
+                                <input id="deadline" v-model="deadline" type="date" class="form-control" :class="{'is-invalid': $v.deadline.$error}" aria-label="Дедлайн" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.deadline.required">
+                                    Поле обязательное.
+                                </div>                           
                             </div>
                             <div class="input-group mb-3">
                                 <select class="form-select" v-model="statusAdd" @change="onChange()" id="inputGroupSelect02">
                                     <option value="1" selected>Задачи</option>
                                     <option value="2">В процессе</option>
-                                   <!-- <option value="3">Завершенный</option> -->
                                 </select>
                                 <label class="input-group-text" for="inputGroupSelect02">Статус</label>
                             </div>
                             <label for="responsible" class="form-label" v-if="responsibleBool">Ответственный:</label>
                             <div class="input-group mb-3" v-if="responsibleBool">
-                                <input id="responsible" v-model="responsible" type="text" class="form-control" aria-describedby="basic-addon1">
+                                <input id="responsible" v-model="responsible" type="text" class="form-control" :class="{'is-invalid': $v.responsible.$error}" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.responsible.required">
+                                    Поле обязательное.
+                                </div>
                             </div>
-                           <!-- <label for="dateCompletion" class="form-label" v-if="dateCompletionBool">Дата завершения:</label>
-                            <div class="input-group mb-3" v-if="dateCompletionBool">
-                                <input id="dateCompletion" v-model="dateCompletion" type="date" class="form-control" aria-describedby="basic-addon1">
-                            </div> -->
                             <div class="modal-footer">
                                 <button type="button" class="btn button-purple" v-on:click="closeEditModal()">Закрыть</button>
                                 <button type="button" class="btn button-green" v-on:click="saveTasks(id)">Сохранить</button>
@@ -86,19 +93,28 @@
                         <div class="p-3">
                             <label for="task" class="form-label mt-3">Задача:</label>
                             <div class="input-group mb-3">
-                                <input id="task" v-model="taskAdd" type="text" class="form-control"  aria-describedby="basic-addon1">
+                                <input id="task" v-model="taskAdd" type="text" class="form-control" :class="{'is-invalid': $v.taskAdd.$error}"  aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.taskAdd.required">
+                                    Поле обязательное.
+                                </div>  
                             </div>
                             <label for="description" class="form-label">Описание:</label>
                             <div class="input-group mb-3">
-                                <textarea id="description" v-model="descriptionAdd" class="form-control" aria-label="With textarea"></textarea>
+                                <textarea id="description" v-model="descriptionAdd" class="form-control" :class="{'is-invalid': $v.descriptionAdd.$error}" aria-label="With textarea"></textarea>
+                                <div class="invalid-feedback" v-if="!$v.descriptionAdd.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <label for="deadline" class="form-label">Дедлайн:</label>
                             <div class="input-group mb-3">
-                                <input id="deadline" v-model="deadlineAdd" type="date" class="form-control"  aria-describedby="basic-addon1">
+                                <input id="deadline" v-model="deadlineAdd" type="date" class="form-control" :class="{'is-invalid': $v.deadlineAdd.$error}" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.deadlineAdd.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn button-purple" v-on:click="closeEditModal()">Закрыть</button>
-                                <button type="button" class="btn button-green" v-on:click="saveNewTask(id)">Сохранить</button>
+                                <button type="button" class="btn button-green" v-on:click="saveNewTask()">Сохранить</button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +126,7 @@
 
 
 <script>
-
+import { required, maxLength, between, requiredIf } from 'vuelidate/lib/validators';
 export default {
     data() {
         return {
@@ -157,7 +173,6 @@ export default {
     },
     methods: {
         onChange() {
-            // console.log(event.target.value);
             console.log('select check '+ this.statusAdd);
             if(this.statusAdd == 2) {
                 this.responsibleBool = true;
@@ -172,21 +187,26 @@ export default {
 
         },
         addTask() {
-            // axios.post('/api/tasks')
             console.log('add');
             this.modalAdd = true;
         },
         saveNewTask() {
-            console.log('save new task');
-            // console.log(this.taskAdd);
+            this.$v.$touch();
+            if(this.$v.deadlineAdd.$error || this.$v.descriptionAdd.$error || this.$v.deadlineAdd.$error || this.$v.taskAdd.$error) {
+                return;
+            }
             axios.post('/api/tasks',{
                 taskName: this.taskAdd,
                 description: this.descriptionAdd,
                 deadline: this.deadlineAdd,
                 user_id: 1 //default
             })
+            .catch( error => {
+                console.log(error);
+                this.errored = true;
+            })
             this.modalAdd = false;
-            document.location.reload();
+            document.location.reload()
         },
         deleteTask(id) {
             console.log(id);
@@ -217,6 +237,10 @@ export default {
             console.log('show '+ id);
         },
         saveTasks(id) {
+            this.$v.$touch();
+            if(this.$v.$anyError) {
+                return;
+            }
             console.log('saving' + id);
             axios.post('/api/tasks/'+id, {
                 _method: 'PUT',
@@ -240,32 +264,44 @@ export default {
                     console.log(error);
                     this.errored = true;
                 })
-            } 
-            // else if(this.statusAdd == 3) { //сохранить в таблицу completed
-            //     axios.get('/api/inprocess')
-            //     .then( (response) => {
-            //         console.log(response.data.data);
-            //         response.data.data.forEach((element, index) => {
-            //             if(element.tasks_id == id) {
-            //                 process_id = element.tasks_id
-            //             }
-            //         })
-            //     })
-            //     axios.post('/api/completed', {
-            //         dateCompletion: this.dateCompletion,
-            //         in_process_id: process_id
-            //     })
-            //     .catch( error => {
-            //         console.log(error);
-            //         this.errored = true;
-            //     })
-            // } 
+            }
             document.location.reload();
         },
         closeEditModal() {
             this.modal = false;
             this.modalAdd = false;
             console.log(this);
+        }
+    },
+    validations: {
+        task: {
+            required
+        },
+        description: {
+            required
+        },
+        deadline: {
+            required
+        },
+        responsible: {
+            required: requiredIf(function() {
+                return this.responsibleBool;
+            })
+        },
+        deadlineAdd: {
+            required: requiredIf(function() {
+                return this.modalAdd;
+            })
+        },
+        taskAdd: {
+            required: requiredIf(function() {
+                return this.modalAdd;
+            })
+        },
+        descriptionAdd: {
+            required: requiredIf(function() {
+                return this.modalAdd;
+            })
         }
     },
 }

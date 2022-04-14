@@ -42,23 +42,38 @@
                         <div class="p-3">
                             <label for="task" class="form-label mt-3">Задача:</label>
                             <div class="input-group mb-3">
-                                <input id="task" v-model="task" type="text" class="form-control" aria-label="Задача" aria-describedby="basic-addon1">
+                                <input id="task" v-model="task" type="text" class="form-control" :class="{'is-invalid': $v.task.$error}" aria-label="Задача" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.task.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <label for="description" class="form-label">Описание:</label>
                             <div class="input-group mb-3">
-                                <textarea id="description" v-model="description" class="form-control" aria-label="With textarea"></textarea>
+                                <textarea id="description" v-model="description" class="form-control" :class="{'is-invalid': $v.description.$error}" aria-label="With textarea"></textarea>
+                                <div class="invalid-feedback" v-if="!$v.description.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <label for="deadline" class="form-label">Дедлайн:</label>
                             <div class="input-group mb-3">
-                                <input id="deadline" v-model="deadline" type="date" class="form-control" aria-label="Дедлайн" aria-describedby="basic-addon1">
+                                <input id="deadline" v-model="deadline" type="date" class="form-control" :class="{'is-invalid': $v.deadline.$error}" aria-label="Дедлайн" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.deadline.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <label for="responsible" class="form-label">Ответственный:</label>
                             <div class="input-group mb-3">
-                                <input id="responsible" v-model="responsible" type="text" class="form-control" aria-describedby="basic-addon1">
+                                <input id="responsible" v-model="responsible" type="text" class="form-control" :class="{'is-invalid': $v.responsible.$error}" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.responsible.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <label for="dateCompletion" class="form-label">Дата завершения:</label>
                             <div class="input-group mb-3">
-                                <input id="dateCompletion" v-model="dateCompletion" type="date" class="form-control" aria-describedby="basic-addon1">
+                                <input id="dateCompletion" v-model="dateCompletion" type="date" class="form-control" :class="{'is-invalid': $v.dateCompletion.$error}" aria-describedby="basic-addon1">
+                                <div class="invalid-feedback" v-if="!$v.dateCompletion.required">
+                                    Поле обязательное.
+                                </div> 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn button-purple" v-on:click="closeEditModal()">Закрыть</button>
@@ -75,7 +90,7 @@
 
 
 <script>
-
+import { required, maxLength, between, requiredIf } from 'vuelidate/lib/validators';
 export default {
     data() {
         return {
@@ -163,6 +178,10 @@ export default {
             console.log('show '+ id);
         },
         saveTasks(id) {
+            this.$v.$touch();
+            if(this.$v.$anyError) {
+                return;
+            }
             axios.post('/api/tasks/'+id, {
                 _method: 'PUT',
                 taskName: this.task,
@@ -203,6 +222,23 @@ export default {
             this.modal = false;
         }
     },
+        validations: {
+        task: {
+            required
+        },
+        description: {
+            required
+        },
+        deadline: {
+            required
+        },
+        responsible: {
+            required
+        },
+        dateCompletion: {
+            required
+        }
+    }
 }
 
 </script>

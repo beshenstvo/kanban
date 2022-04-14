@@ -7,7 +7,8 @@ import Tasks from './components/Tasks';
 import Inprocess from './components/Inprocess';
 import Completed from './components/Completed';
 import Profile from './components/Profile';
-
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 
 Vue.use(VueRouter);
 const router = new VueRouter({
