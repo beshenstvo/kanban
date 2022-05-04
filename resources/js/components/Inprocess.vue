@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-center">
             <h1>В процессе</h1>
         </div>
         <div class='container d-flex flex-wrap'>
@@ -38,6 +38,8 @@
                         <div class="modal-header edit-header">
                             <h5 class="modal-title">Редактирование</h5>
                         </div>
+
+                        <form>
                         <div class="p-3">
                             <label for="task" class="form-label mt-3">Задача:</label>
                             <div class="input-group mb-3">
@@ -86,6 +88,7 @@
                                 <button type="button" class="btn button-green" v-on:click="saveTasks(id)">Сохранить</button>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -120,12 +123,16 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$userId);
+        if(typeof(this.$userId) != "undefined" && this.$userId !== null) {
+            this.user_id = this.$userId;
+        }
         axios.get('/api/tasks')
         .then( response => {
             console.log(response.data.data);
             response.data.data.forEach(element => {
                 console.log(element);
-                if(element.inprocess.length != 0 && element.inprocess[0].completed.length == 0) {
+                if(element.inprocess.length != 0 && element.inprocess[0].completed.length == 0 && element.user_id == this.user_id) {
                     console.log('is empty');
                     this.inprocess.push(element);
                 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-center">
             <div><a href="#"  v-on:click="addTask()"><i class="fa-solid fa-plus add-button"></i></a></div>
         </div>
         <div class='container d-flex flex-wrap'>
@@ -127,6 +127,7 @@
 
 <script>
 import { required, maxLength, between, requiredIf } from 'vuelidate/lib/validators';
+import { $userId } from '../app';
 export default {
     data() {
         return {
@@ -152,12 +153,16 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$userId);
+        if(typeof(this.$userId) != "undefined" && this.$userId !== null) {
+            this.user_id = this.$userId;
+        }
         axios.get('/api/tasks')
         .then( response => {
             console.log(response.data.data);
             // this.tasks = response.data.data;
             response.data.data.forEach(element => {
-                if(element.inprocess.length == 0) {
+                if(element.inprocess.length == 0 && element.user_id == this.user_id) {
                     console.log('is empty');
                     this.tasks.push(element);
                 }
@@ -199,7 +204,7 @@ export default {
                 taskName: this.taskAdd,
                 description: this.descriptionAdd,
                 deadline: this.deadlineAdd,
-                user_id: 1 //default
+                user_id: this.user_id
             })
             .catch( error => {
                 console.log(error);

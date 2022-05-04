@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-center">
             <h1>Завершенные</h1>
         </div>
         <div class='container d-flex flex-wrap'>
@@ -114,11 +114,15 @@ export default {
         }
     },
     mounted() {
+        console.log(this.$userId);
+        if(typeof(this.$userId) != "undefined" && this.$userId !== null) {
+            this.user_id = this.$userId;
+        }
         axios.get('/api/tasks')
         .then( response => {
             response.data.data.forEach(element => {
                 if(element.inprocess.length != 0) {
-                    if(element.inprocess[0].completed.length != 0) {
+                    if(element.inprocess[0].completed.length != 0 && element.user_id == this.user_id) {
                         this.inprocess.push(element);
                     }
                 }
@@ -222,7 +226,7 @@ export default {
             this.modal = false;
         }
     },
-        validations: {
+    validations: {
         task: {
             required
         },
