@@ -3308,7 +3308,7 @@ router.beforeEach(function (to, from, next) {
   }
 
   next();
-});
+}); //доделать
 
 if (document.querySelector("meta[name='user-id']").getAttribute('content') !== null) {
   _node_modules_vue__WEBPACK_IMPORTED_MODULE_7__["default"].prototype.$userId = document.querySelector("meta[name='user-id']").getAttribute('content');

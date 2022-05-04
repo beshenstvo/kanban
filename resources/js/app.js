@@ -77,7 +77,7 @@ router.beforeEach((to, from , next) => {
 
 });
 
-
+//доделать
 if(document.querySelector("meta[name='user-id']").getAttribute('content') !== null){
     Vue.prototype.$userId = document.querySelector("meta[name='user-id']").getAttribute('content');
 }

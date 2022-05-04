@@ -8,7 +8,9 @@
 
     if(isset(Auth::user()->id)){ 
         echo '<meta name="user-id" content="'. Auth::user()->id.'">'; 
-    } 
+    } else {
+        echo '<meta name="user-id" content="">'; 
+    }
     ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
