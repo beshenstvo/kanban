@@ -3,8 +3,8 @@
         <div class="d-flex justify-content-center">
             <h1>Завершенные</h1>
         </div>
-        <div class='container d-flex flex-wrap'>
-            <div class="card text-center m-4" v-for="task in inprocess" style='width: 46%'>
+        <div class='container d-flex flex-wrap justify-content-between'>
+            <div class="card text-center m-4" v-for="task in inprocess" style='width: 31em'>
                 <div class="card-header">
                     Задача: {{ task.id }}
                 </div>

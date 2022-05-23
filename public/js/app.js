@@ -2716,11 +2716,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Login',
   data: function data() {
     return {
+      loggedInError: false,
       pending: false,
       loggedIn: false,
       form: {
@@ -2756,14 +2760,12 @@ __webpack_require__.r(__webpack_exports__);
 
             document.location.reload();
           })["catch"](function (errors) {
+            _this.loggedIn = false;
+            _this.loggedInError = true;
             console.log(errors);
           }).then(function () {
             _this.pending = false;
           });
-
-          if (_this.loggedIn) {
-            window.location.replace('http://127.0.0.1:8000/tasks');
-          }
         });
       }
     }
@@ -2783,12 +2785,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
 //
 //
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  //получение текущего пользователя
+  name: 'Profile',
+  data: function data() {
+    return {
+      name: '',
+      email: '',
+      user_id: '',
+      errored: false
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    console.log(this.$userId);
+
+    if (typeof this.$userId != "undefined" && this.$userId !== null) {
+      this.user_id = this.$userId;
+    }
+
+    axios.get('/api/users').then(function (response) {
+      console.log(response.data.data);
+      response.data.data.forEach(function (element) {
+        if (element.id == _this.user_id) {
+          _this.email = element.email;
+          _this.name = element.name;
+        }
+      });
+    })["catch"](function (error) {
+      console.log(error);
+      _this.errored = true;
+    });
+  }
+});
 
 /***/ }),
 
@@ -39451,13 +39516,13 @@ var render = function () {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "container d-flex flex-wrap" },
+      { staticClass: "container d-flex flex-wrap justify-content-between" },
       _vm._l(_vm.inprocess, function (task) {
         return _c(
           "div",
           {
             staticClass: "card text-center m-4",
-            staticStyle: { width: "46%" },
+            staticStyle: { width: "31em" },
           },
           [
             _c("div", { staticClass: "card-header" }, [
@@ -39902,13 +39967,13 @@ var render = function () {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "container d-flex flex-wrap" },
+      { staticClass: "container d-flex flex-wrap justify-content-between" },
       _vm._l(_vm.inprocess, function (task) {
         return _c(
           "div",
           {
             staticClass: "card text-center m-4",
-            staticStyle: { width: "46%" },
+            staticStyle: { width: "31em" },
           },
           [
             _c("div", { staticClass: "card-header" }, [
@@ -40413,6 +40478,14 @@ var render = function () {
           : _vm._e(),
         _c("br"),
         _vm._v(" "),
+        _vm.loggedInError
+          ? _c(
+              "div",
+              { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+              [_vm._v("\n                Ошибка авторизации!\n            ")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "mb-3" }, [
           _vm._m(0),
           _vm._v(" "),
@@ -40526,9 +40599,128 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("Профиль")])
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "div",
+      { staticClass: "container d-flex flex-wrap justify-content-center" },
+      [
+        _c("div", { staticClass: "card m-4", staticStyle: { width: "70%" } }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm.errored
+            ? _c(
+                "div",
+                { staticClass: "alert alert-danger", attrs: { role: "alert" } },
+                [
+                  _vm._v(
+                    "\n                Ошибка сохранения данных!\n            "
+                  ),
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "card-body",
+              staticStyle: { "background-color": "rgba(78, 153, 149, 0.07)" },
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticStyle: {
+                    width: "40%",
+                    "margin-right": "auto",
+                    "margin-left": "auto",
+                  },
+                },
+                [
+                  _c("div", [
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "name" } },
+                      [_vm._v("Имя")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.name,
+                            expression: "name",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "name", type: "text", disabled: "" },
+                        domProps: { value: _vm.name },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.name = $event.target.value
+                          },
+                        },
+                      }),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      { staticClass: "form-label", attrs: { for: "email" } },
+                      [_vm._v("Email")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.email,
+                            expression: "email",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "email", type: "email", disabled: "" },
+                        domProps: { value: _vm.email },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.email = $event.target.value
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                ]
+              ),
+            ]
+          ),
+        ]),
+      ]
+    ),
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "card-header",
+        staticStyle: { "background-color": "rgba(61, 57, 108, 0.2)" },
+      },
+      [_c("strong", [_vm._v("Профиль")])]
+    )
+  },
+]
 render._withStripped = true
 
 
@@ -40772,13 +40964,13 @@ var render = function () {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "container d-flex flex-wrap" },
+      { staticClass: "container d-flex flex-wrap justify-content-between" },
       _vm._l(_vm.tasks, function (task) {
         return _c(
           "div",
           {
             staticClass: "card text-center m-4",
-            staticStyle: { width: "46%" },
+            staticStyle: { width: "31em" },
           },
           [
             _c("div", { staticClass: "card-header" }, [

@@ -3,8 +3,8 @@
         <div class="d-flex justify-content-center">
             <div><a href="#"  v-on:click="addTask()"><i class="fa-solid fa-plus add-button"></i></a></div>
         </div>
-        <div class='container d-flex flex-wrap'>
-            <div class="card text-center m-4" v-for="task in tasks" style='width: 46%'>
+        <div class='container d-flex flex-wrap justify-content-between'>
+            <div class="card text-center m-4" v-for="task in tasks" style='width: 31em'>
                 <div class="card-header">
                     Задача: {{ task.id }}
                 </div>

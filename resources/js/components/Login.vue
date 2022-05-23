@@ -3,6 +3,9 @@
         <div class="container" style="width: 40%">
             <form>
                 <span v-if="loggedIn">Successfully logged in</span><br>
+                <div class="alert alert-danger" role="alert" v-if="loggedInError">
+                    Ошибка авторизации!
+                </div>
                 <div class="mb-3">
                     <label class="form-label"><strong>Email address</strong></label>
                     <input type="email" class="form-control" aria-describedby="emailHelp" v-model="form.email" placeholder="example@gmail.com">
@@ -25,6 +28,7 @@ export default {
     name: 'Login',
     data() {
         return {
+            loggedInError: false,
             pending: false,
             loggedIn: false,
             form: {
@@ -57,14 +61,13 @@ export default {
                         document.location.reload();
                     })
                     .catch(errors => {
+                        this.loggedIn = false;
+                        this.loggedInError = true;
                         console.log(errors);
                     })
                     .then(() => {
                         this.pending = false;
                     });
-                    if(this.loggedIn) {
-                        window.location.replace('http://127.0.0.1:8000/tasks')
-                    }
                 });
             }
         }
