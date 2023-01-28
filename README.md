@@ -1,3 +1,21 @@
+## Цель проекта:
+1. Реализация серверной и клиенской части:
+    - серверная часть на Laravel;
+    - клиентская часть на Vue.js;
+    - создание 3-ех сущностей;
+    - разработать REST API.
+    
+## Выполненные задачи:
+1. Миграции (3 сущности).
+2. Настройка api-роутов.
+3. Настройка контроллеров для CRUD операций.
+4. Валидация полей на стороне сервера.
+5. Регистрация/авторизация на sanctum.
+6. Валидация полей на стороне клиента с помощью Vuelidate.
+7. Подключение Vue.js.
+8. Настройка роутов на Vue.js.
+9. Верстка страниц на Vue.js + axios запросы.
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
